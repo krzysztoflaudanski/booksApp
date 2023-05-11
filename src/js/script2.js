@@ -45,6 +45,7 @@ function render() {
     }
 }
 
+
 function initActions() {
     const booksList = document.querySelector(select.containerOf.product);
 
@@ -151,3 +152,4 @@ function determineRatingBgc(rating) {
 render();
 
 initActions();
+
