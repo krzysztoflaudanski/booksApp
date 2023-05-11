@@ -3,10 +3,11 @@ const select = {
         product: '#template-book',
     },
     containerOf: {
-        product: '.books-list'
+        product: '.books-list',
+        filters: '.filters',
     },
     books: {
-        imageWrapper: '.books-list .book__image'
+        imageWrapper: '.books-list .book__image',
     }
 };
 
@@ -19,6 +20,8 @@ const data = dataSource;
 
 const favoriteBooks = [];
 //console.log(favoriteBooks);
+
+const filters = [];
 
 function render() {
     for (let productData in data.books) {
@@ -43,25 +46,22 @@ function render() {
 
 
 function initActions() {
-    const bookImages = document.querySelectorAll(select.books.imageWrapper);
-    //console.log(bookImages);
+    const booksList = document.querySelector(select.containerOf.product);
 
+    booksList.addEventListener('click', function (event) { event.preventDefault(); });
 
-    for (let bookImage of bookImages) {
-        //console.log(bookImage);
-        bookImage.addEventListener('click', function (event) { event.preventDefault(); });
+    booksList.addEventListener('dblclick', function (event) {
 
-        bookImage.addEventListener('dblclick', function (event) {
+        event.preventDefault();
+        //console.log(event.target);
+        if (event.target.offsetParent.classList.contains('book__image')) {
 
-            event.preventDefault();
-
-            let id = bookImage.getAttribute('data-id');
+            const id = event.target.offsetParent.getAttribute('data-id');
             //console.log(id);
 
+            if (event.target.offsetParent.classList.contains('favorite')) {
 
-            if (bookImage.classList.contains('favorite')) {
-
-                bookImage.classList.remove('favorite');
+                event.target.offsetParent.classList.remove('favorite');
 
                 const indexOfFavoriBooks = favoriteBooks.indexOf(id);
                 //console.log(indexOfFavoriBooks);
@@ -70,24 +70,37 @@ function initActions() {
 
             } else {
 
-                bookImage.classList.add('favorite');
-
-                let id = bookImage.getAttribute('data-id');
-                //console.log(id);
+                event.target.offsetParent.classList.add('favorite');
 
                 favoriteBooks.push(id);
 
             }
-            //console.log(favoriteBooks);
-        });
-    }
+            console.log(favoriteBooks);
+        }
+
+
+    });
+
+    const filtersList = document.querySelector(select.containerOf.filters);
+
+    filtersList.addEventListener('change', function (event) {
+
+        if (event.target.tagName == 'INPUT' && event.target.type == 'checkbox' && event.target.name == 'filter') {
+            //console.log(event.target.value);
+            //console.log(event.target.checked);
+            if (event.target.checked == true) {
+                filters.push(event.target.value);
+            } else {
+                const indexOfFilters = filters.indexOf(event.target.value);
+
+                filters.splice(indexOfFilters, 1);
+            }
+        }
+        console.log(filters);
+});
 }
-
-
 
 render();
 
 initActions();
-
-
 
