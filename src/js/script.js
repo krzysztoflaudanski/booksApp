@@ -26,25 +26,23 @@ class BooksList {
         thisBooksList.initData();
 
         thisBooksList.getElements();
-
-        thisBooksList.render();
-
-        thisBooksList.initActions();
-
     }
 
     initData() {
         const thisBooksList = this;
 
         thisBooksList.data = dataSource;
+
     }
 
     render() {
         const thisBooksList = this;
 
+        thisBooksList.initActions();
+
         for (let productData in thisBooksList.data.books) {
-           
-            productData = (productData, thisBooksList.data.books[productData]);
+
+            productData = thisBooksList.data.books[productData];
 
             const ratingBgc = thisBooksList.determineRatingBgc(productData.rating);
 
@@ -83,14 +81,14 @@ class BooksList {
             if (event.target.offsetParent.classList.contains('book__image')) {
 
                 const id = event.target.offsetParent.getAttribute('data-id');
-                
+
                 if (event.target.offsetParent.classList.contains('favorite')) {
 
                     event.target.offsetParent.classList.remove('favorite');
 
-                    const indexOfFavoriBooks = thisBooksList.favoriteBooks.indexOf(id);
+                    const indexOfFavoriteBooks = thisBooksList.favoriteBooks.indexOf(id);
 
-                    thisBooksList.favoriteBooks.splice(indexOfFavoriBooks, 1);
+                    thisBooksList.favoriteBooks.splice(indexOfFavoriteBooks, 1);
 
                 } else {
 
@@ -120,7 +118,7 @@ class BooksList {
     filterBooks() {
         const thisBooksList = this;
         for (let book of thisBooksList.data.books) {
-            
+
             let shouldBeHidden = false;
 
             for (let filter in thisBooksList.filters) {
@@ -134,7 +132,7 @@ class BooksList {
                     break;
                 }
             }
-            
+
             const showBook = document.querySelector('.book__image[data-id="' + book.id + '"]');
 
             if (shouldBeHidden == false) {
@@ -174,4 +172,5 @@ class BooksList {
 }
 
 const app = new BooksList();
-console.log(app);
+
+app.render();
